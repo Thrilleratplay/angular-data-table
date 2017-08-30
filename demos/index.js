@@ -2,6 +2,8 @@ import 'angular';
 
 import '../src/dataTable';
 
-import '../src/dataTable.less';
-import '../src/themes/icons.less';
-import '../src/themes/material.less';
+import '../src/dataTable.css';
+import '../src/themes/icons.css';
+import '../src/components/menu/menu.css';
+import '../src/components/popover/popover.css';
+import '../src/themes/material.css';

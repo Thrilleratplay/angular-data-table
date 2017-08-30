@@ -8,7 +8,7 @@ const plumber = require('gulp-plumber');
 const babel = require('gulp-babel');
 const browserSync = require('browser-sync');
 const runSequence = require('run-sequence');
-const less = require('gulp-less');
+const postcss = require('gulp-postcss');
 const changed = require('gulp-changed');
 const vinylPaths = require('vinyl-paths');
 const del = require('del');
@@ -19,11 +19,12 @@ const uglify = require('gulp-uglify');
 const header = require('gulp-header');
 const gutils = require('gulp-util');
 const KarmaServer = require('karma').Server;
+const cssnext = require('postcss-cssnext');
 
 const path = {
   demoSource: 'demo/index.js',
   source: 'src/**/*.js',
-  less: 'src/**/*.less',
+  css: 'src/**/*.css',
   output: 'dist/',
   release: 'release/',
   outputCss: 'dist/**/*.css',
@@ -52,10 +53,9 @@ gulp.task('es6', () => gulp.src(path.source)
     .pipe(gulp.dest(path.output))
     .pipe(browserSync.reload({ stream: true })));
 
-gulp.task('less', () => gulp.src(path.less)
-    .pipe(changed(path.output, { extension: '.css' }))
+gulp.task('css', () => gulp.src(path.css)
     .pipe(plumber())
-    .pipe(less())
+    .pipe(postcss([cssnext()]))
     .pipe(gulp.dest(path.output))
     .pipe(browserSync.reload({ stream: true })));
 
@@ -63,7 +63,7 @@ gulp.task('clean', () => gulp.src([path.output, path.release])
     .pipe(vinylPaths(del)));
 
 gulp.task('compile', callback => (
-    runSequence(['less', 'es6'], callback)
+    runSequence(['css', 'es6'], callback)
 ));
 
 //
@@ -84,7 +84,7 @@ gulp.task('serve', ['compile'], (callback) => {
 });
 
 gulp.task('watch', ['serve'], () => {
-  const watcher = gulp.watch([path.source, path.less, '*.html'], ['compile']);
+  const watcher = gulp.watch([path.source, path.css, '*.html'], ['compile']);
 
   watcher.on('change', (event) => {
     gutils.log(`File ${event.path} was ${event.type}, running tasks...`);
@@ -96,11 +96,11 @@ gulp.task('watch', ['serve'], () => {
 // ------------------------------------------------------------
 
 gulp.task('release', callback => (
-    runSequence('clean', ['release-less', 'release-build'], 'release-umd', 'release-common', 'release-es6-min', callback)
+    runSequence('clean', ['release-css', 'release-build'], 'release-umd', 'release-common', 'release-es6-min', callback)
 ));
 
-gulp.task('release-less', () => gulp.src(['src/themes/*.less', 'src/dataTable.less'])
-    .pipe(less())
+gulp.task('release-css', () => gulp.src(['src/themes/*.css', 'src/dataTable.css'])
+    .pipe(postcss([cssnext()]))
     .pipe(gulp.dest(path.release)));
 
 gulp.task('release-build', () => rollup.rollup({

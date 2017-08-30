@@ -1,6 +1,8 @@
 .dt {
-  visibility: hidden;
+  justify-content: center;
   overflow: hidden;
+  position: relative;
+  visibility: hidden;
 
   &.dt-loaded {
     visibility: visible !important;
@@ -9,13 +11,8 @@
   *,
   *::before,
   *::after {
-    -moz-box-sizing: border-box;
-    -webkit-box-sizing: border-box;
     box-sizing: border-box;
   }
-
-  justify-content: center;
-  position: relative;
 
   .dt-clone {
     opacity: 0.4;
@@ -27,34 +24,20 @@
 
   .dt-cell,
   .dt-header-cell {
-    vertical-align: top;
-    overflow: hidden;
-
-    //white-space: normal;
-    white-space: nowrap;
     line-height: 1.625;
+    overflow: hidden;
     text-overflow: ellipsis;
     -webkit-touch-callout: none;
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    -o-user-select: none;
     user-select: none;
+    vertical-align: top;
+    white-space: nowrap;
   }
 
   .dt-row,
   .dt-header-inner {
-    display: -webkit-box;
-    display: -moz-box;
-    display: -ms-flexbox;
-    display: -webkit-flex;
     display: flex;
-    flex-direction: row;
-    -webkit-flex-flow: row;
-    -moz-flex-flow: row;
-    -ms-flex-flow: row;
-    -o-flex-flow: row;
     flex-flow: row;
+    flex-direction: row; /* stylelint-disable-line order/properties-alphabetical-order */
   }
 
   .dt-row-left,
@@ -72,15 +55,14 @@
     overflow: hidden;
 
     .dt-header-inner {
-      white-space: nowrap;
       align-items: stretch;
-      -webkit-align-items: stretch;
+      white-space: nowrap;
     }
 
     .dt-header-cell {
+      display: inline-block;
       position: relative;
       white-space: nowrap;
-      display: inline-block;
 
       &.dt-drag-over {
         background: #eee;
@@ -93,10 +75,10 @@
       }
 
       .sort-btn {
-        visibility: hidden;
         display: inline-block;
         font-size: 0.7rem;
         vertical-align: super;
+        visibility: hidden;
 
         &.sort-desc,
         &.sort-asc {
@@ -110,15 +92,15 @@
       }
 
       .dt-resize-handle {
+        bottom: 0;
+        cursor: ew-resize;
         display: inline-block;
+        padding: 0 5px;
         position: absolute;
         right: 0;
         top: 0;
-        bottom: 0;
-        width: 5px;
-        padding: 0 5px;
         visibility: hidden;
-        cursor: ew-resize;
+        width: 5px;
       }
 
       &.resizable:hover {
@@ -154,10 +136,6 @@
       white-space: nowrap;
 
       > div {
-        display: -webkit-box;
-        display: -moz-box;
-        display: -ms-flexbox;
-        display: -webkit-flex;
         display: flex;
       }
     }
@@ -178,9 +156,9 @@
 
       .pager,
       .pager li {
-        padding: 0;
-        margin: 0;
         list-style: none;
+        margin: 0;
+        padding: 0;
       }
 
       .pager {

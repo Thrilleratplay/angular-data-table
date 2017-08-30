@@ -1,0 +1,135 @@
+.dt-popover {
+  background: #fff;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.12), 0 1px 2px 0 rgba(0, 0, 0, 0.24);
+  color: #999;
+  display: block;
+  max-height: 300px;
+  max-width: 250px;
+  opacity: 0;
+  overflow-y: auto;
+  position: absolute;
+  z-index: 5000;
+
+  /*
+    border: 1px solid rgba(0,0,0,0.19);
+    border-radius: 7px;
+  */
+
+  &.popover-text {
+    color: #000;
+    font-size: 12px;
+    font-weight: 600;
+    padding: 10px;
+  }
+
+  &.popover-right {
+    transform: translate3d(10, 0, 0);
+  }
+
+  &.popover-left {
+    transform: translate3d(-10px, 0, 0);
+  }
+
+  &.popover-top {
+    transform: translate3d(0, -10px, 0);
+  }
+
+  &.popover-bottom {
+    transform: translate3d(0, 10px, 0);
+  }
+
+  &.popover-animation {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+    transition: opacity 0.3s, transform 0.3s;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    color: #272e33 !important;
+  }
+
+  .popover-caret {
+    /*
+    background: url(images/caret.png);
+     */
+    height: 11px;
+    min-width: 6px;
+    position: absolute;
+    z-index: 5001;
+
+    &.caret-left {
+      transform: rotate(180deg);
+    }
+
+    &.caret-top {
+      transform: rotate(-90deg);
+    }
+
+    &.caret-bottom {
+      transform: rotate(90deg);
+    }
+  }
+
+  header {
+    padding: 15px 20px;
+
+    h1 {
+      font-size: 16px;
+      font-weight: 600;
+      margin: 0;
+    }
+
+    a,
+    a:hover,
+    a:focus {
+      color: #5ea1df;
+    }
+  }
+
+  p {
+    color: #999 !important;
+  }
+
+  .list {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+
+    .main-text {
+      color: #73777b;
+      display: block;
+    }
+
+    .sub-text {
+      color: #afafaf;
+      font-size: 12px;
+    }
+
+    li {
+      background: #fff;
+      border-top: 1px solid #f1f1f1;
+      margin: 0;
+
+      .list-link {
+        cursor: pointer;
+        display: block;
+        padding: 10px 20px;
+      }
+
+      &:hover {
+        background: #eff5fc;
+      }
+    }
+
+    .inactive,
+    .inactive:hover {
+      background: none;
+      padding: 10px 20px;
+    }
+  }
+}
