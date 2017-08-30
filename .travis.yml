@@ -8,16 +8,14 @@ branches:
   - master
 
 before_install:
-- npm install -g protractor@^4.0.11 forever@0.15.3 codecov@^1.0.1 codeclimate-test-reporter@^0.4.0
+ - npm install -g gulp
 
-before_script:
-- forever start node_modules/webpack-dev-server/bin/webpack-dev-server.js --config webpack.config.dev.js
+script:
+  - gulp test
 
 after_success:
-- bash <(curl -s https://codecov.io/bash)
-- test $TRAVIS_TEST_RESULT = 0
-- codeclimate-test-reporter < "/home/travis/build/jonshaffer/angular-data-table/test/coverage/Chrome 35.0.1916 (Windows 7 0.0.0)/lcov.info"
-- codecov
+  - test $TRAVIS_TEST_RESULT = 0
+    && gulp release
 
 script:
 - npm run unit
