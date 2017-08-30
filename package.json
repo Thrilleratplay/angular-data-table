@@ -40,8 +40,8 @@
     "angular": ">=1.4.x <2.0.0"
   },
   "devDependencies": {
-    "angular": "1.5.8",
-    "angular-mocks": "1.5.8",
+    "angular": "1.6.5",
+    "angular-mocks": "1.6.5",
     "babel-core": "^6.9.0",
     "babel-eslint": "^7.0.0",
     "babel-loader": "^7.0.0",
