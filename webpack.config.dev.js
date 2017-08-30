@@ -38,7 +38,13 @@ module.exports = {
                 exclude: /node_modules/,
                 loaders: [
                     'style-loader',
-                    'css-loader'
+                    { loader: 'css-loader', options: { importLoaders: 1 } },
+                    {
+                      loader: 'postcss-loader',
+                      options: {
+                        plugins: [require('postcss-cssnext')()]
+                      }
+                    }
                 ]
             },
             {

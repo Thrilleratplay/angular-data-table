@@ -98,6 +98,7 @@
     "karma-sauce-launcher": "^1.1.0",
     "karma-sinon": "^1.0.5",
     "postcss-cssnext": "^2.10.0",
+    "postcss-loader": "^2.0.6",
     "raw-loader": "^0.5.1",
     "resolve-url-loader": "^2.0.2",
     "rollup": "^0.41.1",
