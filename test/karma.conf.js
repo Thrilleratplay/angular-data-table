@@ -73,10 +73,7 @@ const karmaBaseConfig = {
     'node_modules',
   ],
 
-  browsers: ['PhantomJS'],
-  phantomjsLauncher: {
-    exitOnResourceError: true,
-  },
+  browsers: ['ChromeHeadless'],
   reporters: ['mocha', 'coverage'],
   colors: true,
   singleRun: true,
