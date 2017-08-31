@@ -22,6 +22,10 @@ export default function CellDirective($rootScope, $compile) {
             data-title="{{::cell.column.name}}"
             ng-style="cell.styles()"
             ng-class="cell.cellClass()">
+        <div resizable="cell.column.resizable"
+             on-resize="cell.column.onResized(width, cell.column)"
+             min-width="cell.column.minWidth"
+             max-width="cell.column.maxWidth">
         <label ng-if="cell.column.isCheckboxColumn" class="dt-checkbox">
           <input type="checkbox"
                  ng-checked="cell.selected"

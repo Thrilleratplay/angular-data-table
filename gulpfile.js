@@ -1,23 +1,27 @@
 /* eslint-disable import/no-extraneous-dependencies */
 require('babel-register');
 
-const protractorAngular = require('gulp-angular-protractor');
 const nPath = require('path');
+
+const runSequence = require('run-sequence');
+const vinylPaths = require('vinyl-paths');
+const del = require('del');
+
 const gulp = require('gulp');
 const plumber = require('gulp-plumber');
 const babel = require('gulp-babel');
-const browserSync = require('browser-sync');
-const runSequence = require('run-sequence');
+const rollup = require('gulp-better-rollup');
+const protractorAngular = require('gulp-angular-protractor');
 const postcss = require('gulp-postcss');
 const changed = require('gulp-changed');
-const vinylPaths = require('vinyl-paths');
-const del = require('del');
 const ngAnnotate = require('gulp-ng-annotate');
-const rollup = require('rollup');
 const rename = require('gulp-rename');
 const uglify = require('gulp-uglify');
 const header = require('gulp-header');
 const gutils = require('gulp-util');
+const sourcemaps = require('gulp-sourcemaps');
+
+const browserSync = require('browser-sync');
 const KarmaServer = require('karma').Server;
 const cssnext = require('postcss-cssnext');
 
@@ -43,6 +47,51 @@ const banner = ['/**',
 //
 // Compile Tasks
 // ------------------------------------------------------------
+const BUILDS = {
+  ES6: {
+    EXTENSION: '.es6',
+    FORMAT: 'es',
+  },
+  UMD: {
+    EXTENSION: '',
+    FORMAT: 'umd',
+    PLUGINS: ['transform-es2015-modules-umd'],
+  },
+  COMMON: {
+    EXTENSION: '.cjs',
+    FORMAT: 'cjs',
+    PLUGINS: ['transform-es2015-modules-commonjs'],
+  },
+};
+
+function builder (BUILD) {
+  let rolledUp = gulp.src('src/dataTable.js')
+      .pipe(sourcemaps.init())
+      .pipe(rollup({
+        external: ['angular'],
+        moduleName: 'DataTable',
+        },
+        BUILD.FORMAT))
+      .pipe(rename('dataTable' + BUILD.EXTENSION + '.js'));
+
+    if (BUILD.FORMAT === 'es') {
+      return rolledUp.pipe(header(banner, { pkg }))
+                     .pipe(sourcemaps.write(''))
+                       .pipe(gulp.dest(path.output));
+    }
+
+    return rolledUp.pipe(babel({
+          plugins: BUILD.PLUGINS,
+          moduleId: 'DataTable',
+        }))
+        .pipe(ngAnnotate({
+          gulpWarnings: false,
+        }))
+        .pipe(header(banner, { pkg }))
+        .pipe(sourcemaps.write(''))
+        .pipe(gulp.dest(path.output));
+}
+
 gulp.task('es6', () => gulp.src(path.source)
     .pipe(plumber())
     .pipe(changed(path.output, { extension: '.js' }))
@@ -190,3 +239,6 @@ gulp.task('e2e', ['serve'], (callback) => {
 });
 
 gulp.task('test', ['unit', 'e2e']);
+
+
+gulp.task('builder', () => builder(BUILDS.UMD));
