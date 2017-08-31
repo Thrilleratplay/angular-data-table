@@ -31,7 +31,9 @@ function KarmaConf(config) {
     ],
 
     preprocessors: {
-      '../src/**/*!(.spec).js': ['coverage'],
+      'dataTable.mock.js': ['babel', 'coverage'],
+      'karma.helper.js': ['babel', 'coverage'],
+      '../src/**/*.spec.js': ['babel', 'coverage'],
     },
 
     browsers: ['ChromeHeadless'],
