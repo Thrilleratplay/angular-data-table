@@ -1,5 +1,5 @@
 <!doctype html>
-<html ng-app="app" lang="en">
+<html lang="en">
   <head>
     <meta charset=" utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
@@ -36,8 +36,11 @@
       }
 
     </style>
+    <link href="../dist/dataTable.css" media="all" rel="stylesheet" />
+    <link href="../dist/themes/material.css" media="all" rel="stylesheet" />
+    <link href="http://fontastic.s3.amazonaws.com/Jnf54BZCm7mSjGCxNRbfp3/icons.css" rel="stylesheet">
   </head>
-  <body ng-controller="HomeController">
+  <body ng-app="app" ng-controller="HomeController">
 
 
     <button type="button" ng-click="loadData()">Load Data</button>
@@ -45,10 +48,13 @@
 
     <dtable options="options" rows="data" class="material"></dtable>
 
-    <script src="/assets/dataTable.js"></script>
+    <script src="../jspm_packages/system.js"></script>
+    <script src="../config.js"></script>
 
     <script>
-        var module = angular.module('app', [ 'data-table' ]);
+
+      System.import('dataTable').then(function(dt){
+        var module = angular.module('app', [ dt.default.name ]);
 
         module.controller('HomeController', function($scope, $http){
           $scope.options = {
@@ -67,7 +73,7 @@
           $scope.data = [];
 
           $scope.loadData = function(){
-            $http.get('/data/100.json').success(function(data) {
+            $http.get('/demos/data/100.json').success(function(data) {
               $scope.data.push.apply($scope.data, data);
             });
           };
@@ -76,6 +82,7 @@
             $scope.data.splice(0, $scope.data.length);
           }
         });
+      });
     </script>
 
   </body>
