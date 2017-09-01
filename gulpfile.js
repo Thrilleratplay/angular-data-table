@@ -67,11 +67,6 @@ const BUILDS = {
     FORMAT: 'umd',
     PLUGINS: ['transform-es2015-modules-umd'],
   },
-  COMMON: {
-    EXTENSION: '.cjs',
-    FORMAT: 'cjs',
-    PLUGINS: ['transform-es2015-modules-commonjs'],
-  },
 };
 
 function JsBuilder(BUILD) {
@@ -129,7 +124,6 @@ gulp.task('css', () => gulp.src(['src/themes/*.css', 'src/dataTable.css'])
 
 gulp.task('build-es6', () => JsBuilder(BUILDS.ES6));
 gulp.task('build-umd', () => JsBuilder(BUILDS.UMD));
-gulp.task('build-common', () => JsBuilder(BUILDS.COMMON));
 
 // Copy font files
 gulp.task('fonts', () => gulp.src(path.fonts).pipe(gulp.dest(path.outputFonts)));
@@ -137,7 +131,7 @@ gulp.task('fonts', () => gulp.src(path.fonts).pipe(gulp.dest(path.outputFonts)))
 gulp.task('clean', () => del(path.output));
 
 gulp.task('compile', ['clean'], callback => (
-  // 'build-es6', 'build-common'
+  // 'build-es6',
   runSequence(['fonts', 'css', 'build-umd'], callback)
 ));
 
