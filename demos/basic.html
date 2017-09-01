@@ -36,22 +36,27 @@
       }
 
     </style>
-    <link href="../dist/dataTable.css" media="all" rel="stylesheet" />
-    <link href="../dist/themes/material.css" media="all" rel="stylesheet" />
+    <link href="../dist/dataTable.min.css" media="all" rel="stylesheet" />
+    <!-- <link href="../dist/material.css" media="all" rel="stylesheet" /> -->
     <link href="http://fontastic.s3.amazonaws.com/Jnf54BZCm7mSjGCxNRbfp3/icons.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.6.5/angular.min.js"></script>
+    <script src="../dist/dataTable.js"></script>
   </head>
   <body ng-app="app" ng-controller="HomeController">
 
 
     <dtable options="options" rows="data" class="material" on-row-dbl-click="onRowDblClick(row)"></dtable>
 
-    <script src="../jspm_packages/system.js"></script>
-    <script src="../config.js"></script>
+    <!-- <script src="../jspm_packages/system.js"></script>
+    <script src="../config.js"></script> -->
 
     <script>
 
-      System.import('dataTable').then(function(dt){
-        var module = angular.module('app', [ dt.default.name ]);
+      // System.import('dataTable').then(function(dt){
+        var module = angular.module('app', [
+            //dt.default.name
+            'data-table'
+        ]);
 
         module.controller('HomeController', function($scope, $http){
           $scope.options = {
@@ -66,21 +71,21 @@
               { name: "Company" }
             ]
           };
-          
+
           angular.extend($scope, {
-              onRowDblClick: onRowDblClick 
+              onRowDblClick: onRowDblClick
           });
-          
+
           function onRowDblClick(row) {
               console.log('Row Double Clicked', row);
           }
 
-          $http.get('/demos/data/100.json').success(function(data) {
-            $scope.data = data;
+          $http.get('/demos/data/100.json').then(function(data) {
+            $scope.data = data.data;
           });
 
         });
-      });
+      // });
     </script>
 
   </body>
