@@ -1,12 +1,16 @@
 @charset "utf-8";
 
+:root {
+  --font-path: 'fonts/';
+}
+
 /* data-table font */
 @font-face {
   font-family: "data-table";
   font-style: normal;
   font-weight: normal;
-  src: url("https://file.myfontastic.com/Jnf54BZCm7mSjGCxNRbfp3/fonts/1447204703.eot?#iefix") format("embedded-opentype"), url("https://file.myfontastic.com/Jnf54BZCm7mSjGCxNRbfp3/fonts/1447204703.woff") format("woff"), url("https://file.myfontastic.com/Jnf54BZCm7mSjGCxNRbfp3/fonts/1447204703.ttf") format("truetype"), url("https://file.myfontastic.com/Jnf54BZCm7mSjGCxNRbfp3/fonts/1447204703.svg#1447204703") format("svg");
-  src: url("https://file.myfontastic.com/Jnf54BZCm7mSjGCxNRbfp3/fonts/1447204703.eot");
+  src: url(var(--font-path) "data-table-icons.eot?#iefix") format("embedded-opentype"), url(var(--font-path) "data-table-icons.woff") format("woff"), url(var(--font-path) "data-table-icons.ttf") format("truetype"), url(var(--font-path) "data-table-icons.svg") format("svg");
+  src: url(var(--font-path) "data-table-icons.eot");
 }
 
 [data-icon]::before {

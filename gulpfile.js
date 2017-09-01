@@ -39,7 +39,9 @@ const path = {
   source: 'src/**/*.js',
   css: 'src/**/*.css',
   html: 'src/**/*.html',
+  fonts: 'src/**/*.{ttf,woff,eof,svg}',
   output: 'dist/',
+  outputFonts: 'dist/fonts',
 };
 
 // Banner
@@ -129,11 +131,14 @@ gulp.task('build-es6', () => JsBuilder(BUILDS.ES6));
 gulp.task('build-umd', () => JsBuilder(BUILDS.UMD));
 gulp.task('build-common', () => JsBuilder(BUILDS.COMMON));
 
+// Copy font files
+gulp.task('fonts', () => gulp.src(path.fonts).pipe(gulp.dest(path.outputFonts)));
+
 gulp.task('clean', () => del(path.output));
 
 gulp.task('compile', ['clean'], callback => (
   // 'build-es6', 'build-common'
-  runSequence(['css', 'build-umd'], callback)
+  runSequence(['fonts', 'css', 'build-umd'], callback)
 ));
 
 //
