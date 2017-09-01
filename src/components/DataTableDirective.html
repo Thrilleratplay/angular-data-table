@@ -1,0 +1,28 @@
+<div class="dt" ng-class="dt.tableCss()" data-column-id="${id}">
+    <dt-header options="dt.options"
+               columns="dt.columnsByPin"
+               column-widths="dt.columnWidths"
+               ng-if="dt.options.headerHeight"
+               on-resize="dt.onResized(column, width)"
+               selected-rows="dt.selected"
+               all-rows="dt.rows"
+               on-sort="dt.onSorted()">
+    </dt-header>
+    <dt-body rows="dt.rows"
+             selected="dt.selected"
+             expanded="dt.expanded"
+             columns="dt.columnsByPin"
+             on-select="dt.onSelected(rows)"
+             on-row-click="dt.onRowClicked(row)"
+             on-row-dbl-click="dt.onRowDblClicked(row)"
+             column-widths="dt.columnWidths"
+             options="dt.options"
+             on-page="dt.onBodyPage(offset, size)"
+             on-tree-toggle="dt.onTreeToggled(row, cell)">
+     </dt-body>
+    <dt-footer ng-if="dt.options.footerHeight || dt.options.paging.mode"
+               ng-style="{ height: dt.options.footerHeight + 'px' }"
+               on-page="dt.onFooterPage(offset, size)"
+               paging="dt.options.paging">
+   </dt-footer>
+</div>

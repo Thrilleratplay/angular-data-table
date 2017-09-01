@@ -1,5 +1,6 @@
 import { requestAnimFrame } from '../../utils/utils';
 import StyleTranslator from './StyleTranslator';
+import ScrollerDirectiveTemplate from './ScrollerDirective.html';
 
 export default function ScrollerDirective() {
   return {
@@ -7,7 +8,7 @@ export default function ScrollerDirective() {
     require: '^dtBody',
     transclude: true,
     replace: true,
-    template: '<div ng-style="scrollerStyles()" ng-transclude></div>',
+    template: ScrollerDirectiveTemplate,
     link($scope, $elm, $attrs, ctrl) {
       const parent = $elm.parent();
 

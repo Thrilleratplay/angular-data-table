@@ -89,7 +89,7 @@
     "karma-jasmine": "^1.1.0",
     "karma-mocha-reporter": "^2.2.3",
     "postcss-cssnext": "^3.0.2",
-    "rollup-stream": "^1.23.1",
+    "rollup-plugin-html": "^0.2.1",
     "run-sequence": "^2.1.0",
     "stylefmt": "^6.0.0",
     "stylelint": "^8.0.0",

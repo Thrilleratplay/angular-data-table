@@ -1,4 +1,5 @@
 import HeaderCellController from './HeaderCellController';
+import HeaderCellTemplate from './HeaderCellDirective.html';
 
 export default function HeaderCellDirective($compile) {
   return {
@@ -15,28 +16,7 @@ export default function HeaderCellDirective($compile) {
       selected: '=',
     },
     replace: true,
-    template:
-      `<div ng-class="hcell.cellClass()"
-            class="dt-header-cell"
-            draggable="true"
-            data-id="{{column.$id}}"
-            ng-style="hcell.styles()"
-            title="{{::hcell.column.name}}">
-        <div resizable="hcell.column.resizable"
-             on-resize="hcell.onResized(width, hcell.column)"
-             min-width="hcell.column.minWidth"
-             max-width="hcell.column.maxWidth">
-          <label ng-if="hcell.column.isCheckboxColumn && hcell.column.headerCheckbox" class="dt-checkbox">
-            <input type="checkbox"
-                   ng-model="hcell.column.allRowsSelected"
-                   ng-change="hcell.checkboxChangeCallback()" />
-          </label>
-          <span class="dt-header-cell-label"
-                ng-click="hcell.onSorted($event)">
-          </span>
-          <span ng-class="hcell.sortClass()">{{hcell.column.sortPriority}}</span>
-        </div>
-      </div>`,
+    template: HeaderCellTemplate,
     compile() {
       return {
         pre($scope, $elm, $attrs, ctrl) {

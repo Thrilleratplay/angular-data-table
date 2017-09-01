@@ -1,5 +1,6 @@
 import GroupRowController from './GroupRowController';
 import TranslateXY from '../../utils/translate';
+import GroupRowDirectiveTemplate from './GroupRowDirective.html';
 
 export default function GroupRowDirective() {
   return {
@@ -14,14 +15,7 @@ export default function GroupRowDirective() {
     },
     scope: true,
     replace: true,
-    template: `
-      <div class="dt-group-row">
-        <span ng-class="group.treeClass()"
-              ng-click="group.onGroupToggled($event)">
-        </span>
-        <span class="dt-group-row-label" ng-bind="group.row.name">
-        </span>
-      </div>`,
+    template: GroupRowDirectiveTemplate,
     link($scope, $elm, $attrs, ctrl) {
       // inital render position
       TranslateXY($elm[0].style, 0, ctrl.row.$$index * ctrl.options.rowHeight);

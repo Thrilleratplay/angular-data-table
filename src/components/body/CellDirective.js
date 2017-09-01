@@ -1,4 +1,5 @@
 import CellController from './CellController';
+import CellDirectiveTemplate from './CellDirective.html';
 
 export default function CellDirective($rootScope, $compile) {
   return {
@@ -17,25 +18,7 @@ export default function CellDirective($rootScope, $compile) {
       onTreeToggle: '&',
       onCheckboxChange: '&',
     },
-    template:
-      `<div class="dt-cell"
-            data-title="{{::cell.column.name}}"
-            ng-style="cell.styles()"
-            ng-class="cell.cellClass()">
-        <div resizable="cell.column.resizable"
-             on-resize="cell.column.onResized(width, cell.column)"
-             min-width="cell.column.minWidth"
-             max-width="cell.column.maxWidth">
-        <label ng-if="cell.column.isCheckboxColumn" class="dt-checkbox">
-          <input type="checkbox"
-                 ng-checked="cell.selected"
-                 ng-click="cell.onCheckboxChanged($event)" />
-        </label>
-        <span ng-if="cell.column.isTreeColumn && cell.hasChildren"
-              ng-class="cell.treeClass()"
-              ng-click="cell.onTreeToggled($event)"></span>
-        <span class="dt-cell-content"></span>
-      </div>`,
+    template: CellDirectiveTemplate,
     replace: true,
     compile() {
       return {

@@ -2,45 +2,55 @@
 require('babel-register');
 
 const nPath = require('path');
+const pkg = require('./package.json');
 
-const runSequence = require('run-sequence');
-const del = require('del');
-
-
-const gulp = require('gulp');
-const plumber = require('gulp-plumber');
-const babel = require('gulp-babel');
-const protractorAngular = require('gulp-angular-protractor');
-const postcss = require('gulp-postcss');
-const rollup = require('gulp-better-rollup');
-const cleanCss = require('gulp-clean-css');
-const ngAnnotate = require('gulp-ng-annotate');
+// gulp and utils
 const concat = require('gulp-concat');
-const rename = require('gulp-rename');
-// const uglify = require('gulp-uglify');
-const header = require('gulp-header');
+const del = require('del');
+const gulp = require('gulp');
 const gutils = require('gulp-util');
+const header = require('gulp-header');
+const plumber = require('gulp-plumber');
+const rename = require('gulp-rename');
+const runSequence = require('run-sequence');
 const sourcemaps = require('gulp-sourcemaps');
 
+// ES6 transpiling
+const babel = require('gulp-babel');
+const rollup = require('gulp-better-rollup');
+const rollupHtml = require('rollup-plugin-html');
+const uglify = require('gulp-uglify');
+
+// Css
+const cleanCss = require('gulp-clean-css');
+const cssnext = require('postcss-cssnext');
+const postcss = require('gulp-postcss');
+
+// AngularJS
+const ngAnnotate = require('gulp-ng-annotate');
+
+// testing
 const browserSync = require('browser-sync');
 const KarmaServer = require('karma').Server;
-const cssnext = require('postcss-cssnext');
+const protractorAngular = require('gulp-angular-protractor');
 
+// build paths
 const path = {
   source: 'src/**/*.js',
   css: 'src/**/*.css',
+  html: 'src/**/*.html',
   output: 'dist/',
 };
 
-const pkg = require('./package.json');
-
+// Banner
 const banner = ['/**',
   ' * <%= pkg.name %> - <%= pkg.description %>',
   ' * @version v<%= pkg.version %>',
   ' * @link <%= pkg.homepage %>',
   ' * @license <%= pkg.license %>',
   ' */',
-  ''].join('\n');
+  '',
+].join('\n');
 
 //
 // Compile Tasks
@@ -64,32 +74,56 @@ const BUILDS = {
 
 function JsBuilder(BUILD) {
   let rolledUp = gulp.src('src/dataTable.js')
-                     .pipe(sourcemaps.init())
-                     .pipe(rollup({
-                       external: ['angular'],
-                       moduleName: 'DataTable',
-                       exports: 'named',
-                     },
-                     BUILD.FORMAT))
-                     .pipe(rename(`dataTable${BUILD.EXTENSION}.js`));
+    .pipe(plumber())
+    .pipe(sourcemaps.init())
+    .pipe(rollup({
+      external: ['angular'],
+      moduleName: 'DataTable',
+      exports: 'named',
+      plugins: [
+        rollupHtml({
+          include: path.html,
+          htmlMinifierOptions: {
+            collapseWhitespace: true,
+          },
+        }),
+      ],
+    },
+    BUILD.FORMAT))
+    .pipe(rename(`dataTable${BUILD.EXTENSION}.js`));
 
   if (BUILD.FORMAT !== 'es') {
-    rolledUp = rolledUp.pipe(babel({ plugins: BUILD.PLUGINS, moduleId: 'DataTable' }))
-                       .pipe(ngAnnotate({ gulpWarnings: false }));
+    rolledUp = rolledUp.pipe(babel({
+      plugins: BUILD.PLUGINS,
+      moduleId: 'DataTable',
+    }))
+      .pipe(ngAnnotate({
+        gulpWarnings: false,
+      }));
   }
 
   return rolledUp.pipe(header(banner, { pkg }))
-                 .pipe(sourcemaps.write(''))
-                 .pipe(gulp.dest(path.output));
+    .pipe(gulp.dest(path.output))
+    .pipe(uglify())
+    .pipe(header(banner, { pkg }))
+    .pipe(rename(`dataTable${BUILD.EXTENSION}.min.js`))
+    .pipe(sourcemaps.write(''))
+    .pipe(gulp.dest(path.output));
 }
 
 gulp.task('css', () => gulp.src(['src/themes/*.css', 'src/dataTable.css'])
-    .pipe(plumber())
-    .pipe(concat('dataTable.min.css'))
-    .pipe(postcss([cssnext()]))
-    .pipe(cleanCss())
-    .pipe(gulp.dest(path.output)));
-    // .pipe(browserSync.reload({ stream: true })));
+  .pipe(plumber())
+  .pipe(sourcemaps.init())
+  .pipe(concat('dataTable.css'))
+  .pipe(postcss([cssnext()]))
+  .pipe(header(banner, { pkg }))
+  .pipe(gulp.dest(path.output))
+  .pipe(cleanCss())
+  .pipe(header(banner, { pkg }))
+  .pipe(rename('dataTable.min.css'))
+  .pipe(sourcemaps.write(''))
+  .pipe(gulp.dest(path.output)));
+// .pipe(browserSync.reload({ stream: true })));
 
 gulp.task('build-es6', () => JsBuilder(BUILDS.ES6));
 gulp.task('build-umd', () => JsBuilder(BUILDS.UMD));
@@ -98,7 +132,8 @@ gulp.task('build-common', () => JsBuilder(BUILDS.COMMON));
 gulp.task('clean', () => del(path.output));
 
 gulp.task('compile', ['clean'], callback => (
-    runSequence(['css', 'build-es6', 'build-umd', 'build-common'], callback)
+  // 'build-es6', 'build-common'
+  runSequence(['css', 'build-umd'], callback)
 ));
 
 //
